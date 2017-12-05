@@ -43,7 +43,7 @@ const RecentTransaction = (props) => {
       <List>
         <Subheader style={styles.subheader}>Recent Transaction</Subheader>
         {props.data.map(item =>
-          <div key={item.title}>
+          <div key={item._id}>
             <ListItem
               leftAvatar={<Avatar icon={<Wallpaper />} />}
               primaryText={"Amount:"+ item.amountTransaction}

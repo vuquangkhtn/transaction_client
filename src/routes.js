@@ -13,7 +13,6 @@ export default (
     <Route path="login" component={LoginPage}/>
     <Route path="register" component={RegisterPage}/>
     <Route path="/" component={App}>
-      <IndexRoute path="login" component={LoginPage}/>
       <Route path="dashboard" component={Dashboard}/>
       <Route path="addTransaction" component={AddTransactionPage}/>
       <Route path="transactionDetail" component={TransactionDetailPage}/>

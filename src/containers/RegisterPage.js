@@ -1,5 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import {Link} from 'react-router';
+import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import {grey400} from 'material-ui/styles/colors';
@@ -16,28 +18,36 @@ class RegisterPage extends React.Component {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const vertifyPass = document.getElementById('vertifyPass').value;
+
+    if(name == "" || email=="" || password=="" || vertifyPass=="") {
+      alert('Input to text fields');
+      return;
+    }
     
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
     if(password != vertifyPass) {
       alert('Vertify password failed');
       return;
     }
-    fetch(proxyurl+"https://nameless-escarpment-79889.herokuapp.com/users",
-      {
-       method: 'post',
-       body: {
-        "name":name,
-        "email":email,
-        "password":password,
-        "transactions":[]
-       }})
-    .then(response => alert('Register Successfully'))
-    // .then(data => console.log(data))
-    // .then(data => this.setState({users: data}))
-    .catch(function(error) {  
+    
+    const apiLink = 'https://nameless-escarpment-79889.herokuapp.com';
+    axios.post(apiLink+'/users', {
+      "name":name,
+      "email":email,
+      "password":password,
+      "transactions":[]
+    })
+    .then(function (response) {
+      console.log(response);
+      alert('Register Successfully');
+      browserHistory.push('/login');
+      return;
+    })
+    .catch(function (error) {
+      console.log(error);
       alert('Register failed', error);
+      return;
     });
-   }
+  }
 
   render() {
     const styles = {
@@ -86,14 +96,12 @@ class RegisterPage extends React.Component {
                   hintText="Name"
                   floatingLabelText="Name"
                   fullWidth={true}
-                  inputRef={val => this.name = val}
                 />
                 <TextField
                   id="email"
                   hintText="Email"
                   floatingLabelText="Email"
                   fullWidth={true}
-                  inputRef={val => this.email = val}
                 />
 
                 <TextField
@@ -102,7 +110,6 @@ class RegisterPage extends React.Component {
                   floatingLabelText="Password"
                   type = "password"
                   fullWidth={true}
-                  inputRef={val => this.password = val}
                 />
                 
                 <TextField
@@ -111,7 +118,6 @@ class RegisterPage extends React.Component {
                   floatingLabelText="Vertify Password"
                   type = "password"
                   fullWidth={true}
-                  inputRef={val => this.vertifyPass = val}
                 />
 
                 <Divider/>
@@ -121,12 +127,10 @@ class RegisterPage extends React.Component {
                     <RaisedButton label="Cancel"/>
                   </Link>
 
-                  <Link to="/login">
-                    <RaisedButton label="Submit"
-                        style={styles.saveButton}
-                        onClick={(event) => this.handleClick(event)}
-                        primary={true}/>
-                  </Link>
+                  <RaisedButton label="Submit"
+                      style={styles.saveButton}
+                      onClick={(event) => this.handleClick(event)}
+                      primary={true}/>
                 </div>
               </form>
 

@@ -9,7 +9,8 @@ import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 
 const data = {
   user:{
-    
+    email:"test@gmail.com",
+    // password:"test"
   },
   menus: [
     { text: 'DashBoard', icon: <Assessment/>, link: '/dashboard' },
