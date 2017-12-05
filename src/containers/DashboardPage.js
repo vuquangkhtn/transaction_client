@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {browserHistory} from 'react-router';
 import {pink600, purple600} from 'material-ui/styles/colors';
 import Assessment from 'material-ui/svg-icons/action/assessment';
@@ -12,27 +13,37 @@ class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: []
+      user: {}
     };
   }
-
-  componentDidMount() {
-    if(Data.user.email == null) {
-        browserHistory.push('/login');
-    }
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    fetch(proxyurl+"https://nameless-escarpment-79889.herokuapp.com/user/"+Data.user.email)
-    .then(response => response.json())
-    // .then(data => console.log(data))
-    .then(data => this.setState({user: data}))
-    .catch(function(error) {  
-      console.log('Request failed', error);
+ 
+  loadData() {
+    var self = this;
+    const apiLink = 'https://nameless-escarpment-79889.herokuapp.com';
+    axios.get(apiLink+'/users/'+Data.user.email)
+    .then(function (response) {
+      console.log(response.data);
+      self.setState({user: response.data});
+    })
+    .catch(function (error) {
+      console.log(error);
     });
   }
 
+  componentWillReceiveProps() {
+    this.loadData();
+  }
+
+  componentDidMount() {
+    this.loadData();
+  }
+
+
   render() {
     const user = this.state.user;
-    console.log();
+    if(user.transactions == null) {
+      return(<div>The responsive it not here yet!</div>);
+    }
     return (
       <div>
         <h3 style={globalStyles.navigation}>Application / Dashboard</h3>

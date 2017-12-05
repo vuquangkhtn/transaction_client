@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {Link} from 'react-router';
 import {browserHistory} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -13,24 +14,39 @@ constructor(props) {
     super(props);
   }
   componentDidMount() {
-    if(Data.user.email == null) {
-        browserHistory.push('/login');
-    }
+    // if(Data.user.email == null) {
+    //     browserHistory.push('/login');
+    //     return;
+    // }
   }
   handleClick(event){
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    fetch(proxyurl+"https://nameless-escarpment-79889.herokuapp.com/users/"+Data.user.email,
-      {
-       method: 'post',
-       body: {
-         "emailReceiver":this.email,
-         "amountTransaction":this.amount
-       }})
-    .then(response => alert('Add Transaction Successfully'))
-    // .then(data => console.log(data))
-    // .then(data => this.setState({users: data}))
-    .catch(function(error) {  
-      alert('Request failed', error);
+    const email = document.getElementById('email').value;
+    const amount = document.getElementById('amount').value;
+
+    if(email == "" || amount == "") {
+      alert('input to text box');
+      return;
+    }
+
+    const apiLink = 'https://nameless-escarpment-79889.herokuapp.com';
+    axios.post(apiLink+'/users/'+Data.user.email, {
+      "emailReceiver":email,
+      "amountTransaction":parseInt(amount)
+    })
+    .then(function (response) {
+      console.log(response);
+      if(response.status == 200){
+        alert('Add Transaction Successfully');
+      } else if(response.status == 304) {
+        alert('Money is not enough');
+      } else if(response.status == 305) {
+        alert('Email receiver is not exist');
+      }
+      browserHistory.push('/transactionDetail');
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert('Add Transaction failed');
     });
    }
 
@@ -60,17 +76,17 @@ constructor(props) {
         <form>
 
           <TextField
+            id="email"
             hintText="Email receiver"
             floatingLabelText="Email receiver"
             fullWidth={true}
-            inputRef={val => this.email = val}
           />
 
           <TextField
+            id="amount"
             hintText="Amount"
             floatingLabelText="Amount"
             fullWidth={true}
-            inputRef={val => this.amount = val}
           />
 
           <Divider/>
@@ -80,12 +96,10 @@ constructor(props) {
               <RaisedButton label="Cancel"/>
             </Link>
 
-            <Link to="/transactionDetail">
-              <RaisedButton label="Save"
-                style={styles.saveButton}
-                onClick={(event) => this.handleClick(event)}
-                primary={true}/>
-            </Link>
+            <RaisedButton label="Save"
+              style={styles.saveButton}
+              onClick={(event) => this.handleClick(event)}
+              primary={true}/>
           </div>
         </form>
       </PageBase>

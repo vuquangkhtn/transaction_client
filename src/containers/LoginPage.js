@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {browserHistory} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
@@ -18,47 +19,46 @@ class LoginPage extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  componentDidMount() {
+    // if(Data.user != null && Data.user.email != null) {
+    //   browserHistory.push('/dashboard');
+    //   return;
+    // }
+  }
   handleClick(event){
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    if(Data.user != null && Data.user.email != null) {
-        browserHistory.push('/dashboard');
-        return;
-    }
+    
     if(email == "" || password == "") {
       alert("Fill in text box");
       return;
     }
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
     console.log(email);
     console.log(password);
-    fetch(proxyurl+"https://nameless-escarpment-79889.herokuapp.com/users/checklogin",
-      {
-       method: 'post',
-       body: {
-        "email":email,
-        "password":password
-       }})
-    .then(response => {
-        console.log(response);
-        if(response.status == 200){
-          alert("Login successful");
-          Data.user = {
-            "email":email,
-            "password":password
-           };
-          browserHistory.push('/dashboard');
-       }
-       else{
-         alert("Login failed");
-          browserHistory.push('/login');
-       }
+    const apiLink = 'https://nameless-escarpment-79889.herokuapp.com';
+    axios.post(apiLink+'/users/checklogin', {
+      "email":email,
+      "password":password
     })
-    // .then(data => console.log(data))
-    // .then(data => this.setState({users: data}))
-    .catch(function(error) {  
+    .then(function (response) {
+      console.log(response);
+      if(response.status == 200){
+        alert("Login successful");
+        Data.user.email = email;
+        browserHistory.push('/dashboard');
+        return;
+      }
+      else{
+        alert("Login failed");
+        browserHistory.push('/login');
+        return;
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
       alert('Login failed', error);
+      return;
     });
    }
 
@@ -126,13 +126,13 @@ class LoginPage extends React.Component {
               <form>
                 <TextField
                   id="email"
-                  hintText="E-mail"
+                  hintText="test@gmail.com"
                   floatingLabelText="E-mail"
                   fullWidth={true}
                 />
                 <TextField
                   id="password"
-                  hintText="Password"
+                  hintText="test"
                   floatingLabelText="Password"
                   fullWidth={true}
                   type="password"
