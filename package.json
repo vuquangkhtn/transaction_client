@@ -15,15 +15,7 @@
     "react-router": "3.0.2",
     "react-scripts":"1.0.0",
     "react-tap-event-plugin": "2.0.1",
-    "recharts": "0.20.8"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "devDependencies": {
+    "recharts": "0.20.8",
     "autoprefixer": "6.7.3",
     "babel-cli": "6.23.0",
     "babel-core": "6.23.1",
@@ -72,5 +64,13 @@
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.12.2",
     "webpack-md5-hash": "0.0.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
   }
 }
