@@ -44,7 +44,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start": "webpack-dev-server --inline --progress --port 80 --hot --host 0.0.0.0 **--public https://salty-anchorage-44523.herokuapp.com**",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
