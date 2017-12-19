@@ -8,22 +8,17 @@ import InfoBox from '../components/dashboard/InfoBox';
 import RecentTransaction from '../components/dashboard/RecentTransaction';
 import globalStyles from '../styles';
 import Data from '../data';
+import {connect} from 'react-redux';
+import * as actions from './../actions/index.js';
 
 class DashboardPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {}
-    };
-  }
- 
   loadData() {
     var self = this;
     const apiLink = 'https://nameless-escarpment-79889.herokuapp.com';
     axios.get(apiLink+'/users/'+Data.user.email)
     .then(function (response) {
       console.log(response.data);
-      self.setState({user: response.data});
+      self.props.dispatch(actions.getData(response.data));
     })
     .catch(function (error) {
       console.log(error);
@@ -40,7 +35,7 @@ class DashboardPage extends React.Component {
 
 
   render() {
-    const user = this.state.user;
+    const user = this.props.user;
     if(user.transactions == null) {
       return(<div>The responsive it not here yet!</div>);
     }
@@ -76,4 +71,9 @@ class DashboardPage extends React.Component {
   }
 }
 
-export default DashboardPage;
+const mapStateToProps = (state) =>{
+  return {
+    user: state.mainReducer.user
+  };
+}
+export default connect (mapStateToProps)(DashboardPage);

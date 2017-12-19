@@ -15,16 +15,6 @@ import Data from '../data';
 
 class LoginPage extends React.Component {
 
-
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    // if(Data.user != null && Data.user.email != null) {
-    //   browserHistory.push('/dashboard');
-    //   return;
-    // }
-  }
   handleClick(event){
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;

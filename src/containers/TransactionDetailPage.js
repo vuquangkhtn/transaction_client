@@ -8,23 +8,17 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey500} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
 import Data from '../data';
+import {connect} from 'react-redux';
+import * as actions from './../actions/index.js';
 
 class TransactionDetailPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: []
-    };
-  }
-
   loadData() {
     var self = this;
     const apiLink = 'https://nameless-escarpment-79889.herokuapp.com';
     axios.get(apiLink+'/users/'+Data.user.email)
     .then(function (response) {
       console.log(response.data);
-      self.setState({user: response.data});
+      self.props.dispatch(actions.getData(response.data));
     })
     .catch(function (error) {
       console.log('Request failed', error);
@@ -40,7 +34,7 @@ class TransactionDetailPage extends React.Component {
   }
 
   render() {
-    const transactions = this.state.user.transactions;
+    const transactions = this.props.user.transactions;
     if(transactions == null) {
       return(<div>The responsive it not here yet!</div>);
     }
@@ -107,4 +101,9 @@ class TransactionDetailPage extends React.Component {
   }
 }
 
-export default TransactionDetailPage;
+const mapStateToProps = (state) =>{
+  return {
+    user: state.mainReducer.user
+  };
+}
+export default connect (mapStateToProps)(TransactionDetailPage);

@@ -10,15 +10,7 @@ import PageBase from '../components/PageBase';
 import Data from '../data';
 
 class AddTransactionPage extends React.Component {
-constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    // if(Data.user.email == null) {
-    //     browserHistory.push('/login');
-    //     return;
-    // }
-  }
+
   handleClick(event){
     const email = document.getElementById('email').value;
     const amount = document.getElementById('amount').value;
